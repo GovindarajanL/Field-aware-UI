@@ -1,0 +1,132 @@
+<div>
+  <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a class="active" href="map">Map</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+</div>
+<input type="button" (click)="addUser($event,content2);" name="addUs" value ="Add User"/>
+<div *ngIf="markers?.length > 0">
+  <agm-map [latitude]='latitude'
+[longitude]='longitude'
+[zoom]='5'
+(mapClick)='addMarker($event.coords.lat, $event.coords.lng)'>
+<agm-marker
+  *ngFor='let marker of markers'
+  [latitude]='marker.latitude'
+  [longitude]='marker.longitude'
+  [iconUrl]="marker.icon"
+  [markerDraggable]='true'
+  (markerClick)='selectMarker($event,content);'
+  >
+</agm-marker>
+</agm-map>
+</div>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Event</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+    <div class="form-group">
+        <label for="jobDate">Event Desc</label>
+        <div class="input-group">
+          <input id="jobdesc" class="form-control" name="jbdesc" [(ngModel)]="jobdesc" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Zone</label>
+        <div>
+          <select class="form-control" id="sel1">
+            <option value= "1">
+              Zone 1
+            </option>
+            <option value= "2">
+              Zone 2
+            </option>
+            <option value= "3">
+              Zone 3
+            </option>
+            <option value= "4">
+              Zone 4
+            </option>
+            <option value= "5">
+              Zone 5
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="jobDate">Event Date</label>
+        <div class="input-group">
+          <input id="jobDate" class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="jobdate" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="submitbutton();modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title2">Add User</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+    <div class="form-group">
+        <label for="jobDate">User Name</label>
+        <div class="input-group">
+          <input id="jobdesc" class="form-control" name="jbdesc" [(ngModel)]="jobdesc" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Zone</label>
+        <div>
+          <select class="form-control" id="sel1">
+            <option value= "1">
+              Zone 1
+            </option>
+            <option value= "2">
+              Zone 2
+            </option>
+            <option value= "3">
+              Zone 3
+            </option>
+            <option value= "4">
+              Zone 4
+            </option>
+            <option value= "5">
+              Zone 5
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="jobDate">Start Date</label>
+        <div class="input-group">
+          <input id="jobDate" class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="jobdate" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="submitbutton();modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

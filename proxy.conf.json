@@ -1,0 +1,8 @@
+{
+    "/api" : {
+        "target" : "http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service", 
+        "secure" : false,
+        "logLevel" : "debug",
+        "changeOrigin": true
+    }
+}
