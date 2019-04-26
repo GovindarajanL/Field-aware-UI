@@ -5768,208 +5768,87 @@ __webpack_require__.r(__webpack_exports__);
 var AppServiceService = /** @class */ (function () {
     function AppServiceService(http) {
         this.http = http;
+        this.outResp = [];
+        this.outWorkForseResp = [];
     }
     // Need to make the rest call and get the response from the AWS service
     AppServiceService.prototype.getfreeWorkForce = function () {
         var out = [];
-        var resp = [
-            {
-                "id": 30001,
-                "name": "User1",
-                "password": "Test@123",
-                "email": "aaa@gmail.com",
-                "role": "WORKER",
-                "status": "ASSIGNED",
-                "active": "Y",
-                "latitude": "44.968046",
-                "longitude": "-94.420307",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 30002,
-                "name": "User2",
-                "password": "Test@123",
-                "email": "bbb@gmail.com",
-                "role": "WORKER",
-                "status": "ASSIGNED",
-                "active": "Y",
-                "latitude": "44.33328",
-                "longitude": "-89.132008",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 30003,
-                "name": "User3",
-                "password": "Test@123",
-                "email": "ccc@gmail.com",
-                "role": "WORKER",
-                "status": "INPROGRESS",
-                "active": "Y",
-                "latitude": "33.755787",
-                "longitude": "-116.359998",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 30004,
-                "name": "User4",
-                "password": "Test@123",
-                "email": "ddd@gmail.com",
-                "role": "WORKER",
-                "status": "INPROGRESS",
-                "active": "Y",
-                "latitude": "44.968046",
-                "longitude": "-94.420307",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 30005,
-                "name": "User5",
-                "password": "Test@123",
-                "email": "eee@gmail.com",
-                "role": "WORKER",
-                "status": "ASSIGNED",
-                "active": "Y",
-                "latitude": "44.33328",
-                "longitude": "-89.132008",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 30006,
-                "name": "User6",
-                "password": "Test@123",
-                "email": "fff@gmail.com",
-                "role": "WORKER",
-                "status": "ASSIGNED",
-                "active": "Y",
-                "latitude": "33.755787",
-                "longitude": "-116.359998",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            }
-        ];
-        resp.forEach(function (item) {
-            item.icon = 'https://img.icons8.com/color/32/000000/street-view.png';
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
+            'Access-Control-Allow-Origin': '*'
         });
-        return resp;
+        headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+        return this.http.get('http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/users/', { headers: headers });
+        /* return this.http.get(
+             'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/users/',{headers: headers})
+             .subscribe(responseval =>{
+               this.initializeWork(responseval)
+               console.log(" the out response is",this.outWorkForseResp);
+               this.outWorkForseResp.forEach(item => {
+                 item.icon ='https://img.icons8.com/color/32/000000/street-view.png';
+                 
+               })
+               
+             });*/
+        //return this.outWorkForseResp;
+    };
+    AppServiceService.prototype.createEvents = function (name, latitude, longitude, numberofworkers, severity, date) {
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
+            'Access-Control-Allow-Origin': '*'
+        });
+        //fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com
+        headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+        return this.http.post('http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/', JSON.stringify({ active: 'Y', name: name, numberOfWorkersRequired: numberofworkers, severity: severity,
+            status: 'UNASSIGNED', zoneId: 0, endDate: date, startDate: date, lattitude: latitude, longitude: longitude }), { headers: headers });
+    };
+    AppServiceService.prototype.createUser = function (name, date, latitude, longitude, email) {
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
+            'Access-Control-Allow-Origin': '*'
+        });
+        headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+        return this.http.post('http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/users/', JSON.stringify({ active: 'Y', email: email, lattitude: latitude, longitude: longitude,
+            password: "12345", role: "ADMIN", name: name,
+            zoneId: 0, endDate: date, startDate: date }), { headers: headers });
+    };
+    AppServiceService.prototype.updateEvents = function (id) {
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
+            'Access-Control-Allow-Origin': '*'
+        });
+        headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+        return this.http.put('http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/' + id + '/COMPLETED', { headers: headers });
     };
     AppServiceService.prototype.getAssignedJobs = function () {
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
             'Access-Control-Allow-Origin': '*'
         });
         headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-        var resp = [
-            {
-                "id": 20001,
-                "name": "Event1",
-                "status": "ASSIGNED",
-                "priority": "CRITICAL",
-                "severity": "CRITICAL",
-                "active": "Y",
-                "latitude": "44.968046",
-                "longitude": "-94.420307",
-                "startDate": "2019-04-24",
-                "endDate": "2019-04-24",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 20002,
-                "name": "Event2",
-                "status": "ASSIGNED",
-                "priority": "HIGH",
-                "severity": "MODERATE",
-                "active": "Y",
-                "latitude": "44.33328",
-                "longitude": "-89.132008",
-                "startDate": "2019-04-24",
-                "endDate": "2019-04-24",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 20003,
-                "name": "Event3",
-                "status": "ASSIGNED",
-                "priority": "LOW",
-                "severity": "LOW",
-                "active": "Y",
-                "latitude": "33.755787",
-                "longitude": "-116.359998",
-                "startDate": "2019-04-24",
-                "endDate": "2019-04-24",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 20004,
-                "name": "Event4",
-                "status": "UNASSIGNED",
-                "priority": "CRITICAL",
-                "severity": "CRITICAL",
-                "active": "Y",
-                "latitude": "44.968046",
-                "longitude": "-94.420307",
-                "startDate": "2019-04-24",
-                "endDate": "2019-04-24",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 20005,
-                "name": "Event5",
-                "status": "HOLD",
-                "priority": "HIGH",
-                "severity": "MODERATE",
-                "active": "Y",
-                "latitude": "44.33328",
-                "longitude": "-89.132008",
-                "startDate": "2019-04-24",
-                "endDate": "2019-04-24",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            },
-            {
-                "id": 20006,
-                "name": "Event6",
-                "status": "COMPLETED",
-                "priority": "LOW",
-                "severity": "LOW",
-                "active": "Y",
-                "latitude": "33.755787",
-                "longitude": "-116.359998",
-                "startDate": "2019-04-24",
-                "endDate": "2019-04-24",
-                "created": "2019-04-24T00:00:00",
-                "updated": "2019-04-24T00:00:00"
-            }
-        ];
-        resp.forEach(function (item) {
-            if (item.severity == 'CRITICAL') {
+        /*return new Promise(resolve => {
+          this.http.get(
+            'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/',{headers: headers})
+            .subscribe(responseval =>{
+              this.initialize(responseval)
+              console.log(" the response is",this.outResp);
+              
+            });
+            this.outResp.forEach(item => {
+              if(item.severity == 'CRITICAL'){
                 item.icon = 'https://img.icons8.com/bubbles/25/000000/calendar.png';
+            }else if(item.severity == 'LOW'){
+              item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
+            }else {
+              item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
             }
-            else if (item.severity == 'LOW') {
-                item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
-            }
-            else {
-                item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
-            }
-        });
-        return resp;
-        /*return this.http.get(
-          'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/',{headers: headers});
-        
-        
-        var response:AssignedJobs[] = [];
-        response.push(new AssignedJobs('JobId1',"Chennai","04-MAY-2019"));
-        response.push(new AssignedJobs('JobId2',"Chennai","05-MAY-2019"));
-        response.push(new AssignedJobs('JobId3',"Chennai","06-MAY-2019"));
-        return response;
-        */
+              
+            })*/
+        return this.http.get('http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/', { headers: headers });
+    };
+    AppServiceService.prototype.initialize = function (lst) {
+        this.outResp = lst;
+        // from now on your object will be set
+    };
+    AppServiceService.prototype.initializeWork = function (lst) {
+        this.outWorkForseResp = lst;
+        // from now on your object will be set
     };
     AppServiceService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -5984,17 +5863,6 @@ var AppServiceService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/app.component.css":
-/*!***********************************!*\
-  !*** ./src/app/app.component.css ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIn0= */"
-
-/***/ }),
-
 /***/ "./src/app/app.component.html":
 /*!************************************!*\
   !*** ./src/app/app.component.html ***!
@@ -6002,7 +5870,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n \n</div>\n<router-outlet></router-outlet>\n\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<div style=\"text-align:center\">\r\n \r\n</div>\r\n<router-outlet></router-outlet>\r\n\r\n"
 
 /***/ }),
 
@@ -6045,14 +5913,12 @@ var AppComponent = /** @class */ (function () {
         } catch (e) {
           console.log(e);
         }*/
-        this.assignedJobs = this.appservice.getAssignedJobs();
         console.log(" thee assigned jobs is", this.assignedJobs);
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-root',
-            template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
-            styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
+            template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html")
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_app_service_service__WEBPACK_IMPORTED_MODULE_2__["AppServiceService"]])
     ], AppComponent);
@@ -6160,7 +6026,7 @@ module.exports = "table {\r\n    width: 80%;\r\n  }\r\n/*# sourceMappingURL=data
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<br/>\n<br/>\n\n<table mat-table [dataSource]=\"dataSource\" class=\"mat-elevation-z8\">\n\n    <!--- Note that these columns can be defined in any order.\n          The actual rendered columns are set as a property on the row definition\" -->\n  \n    <!-- Position Column -->\n    <ng-container matColumnDef=\"position\">\n      <th mat-header-cell *matHeaderCellDef> No. </th>\n      <td mat-cell *matCellDef=\"let element\"> {{element.id}} </td>\n    </ng-container>\n  \n    <!-- Name Column -->\n    <ng-container matColumnDef=\"name\">\n      <th mat-header-cell *matHeaderCellDef> Name </th>\n      <td mat-cell *matCellDef=\"let element\"> {{element.name}} </td>\n    </ng-container>\n  \n    <!-- Weight Column -->\n    <ng-container matColumnDef=\"status\">\n      <th mat-header-cell *matHeaderCellDef> Status </th>\n      <td mat-cell *matCellDef=\"let element\"> {{element.status}} </td>\n    </ng-container>\n  \n    <!-- Symbol Column -->\n    <ng-container matColumnDef=\"role\">\n      <th mat-header-cell *matHeaderCellDef> Role </th>\n      <td mat-cell *matCellDef=\"let element\"> {{element.role}} </td>\n    </ng-container>\n  \n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n  </table>\n"
+module.exports = "<div>\r\n  <ul>\r\n      <li><a class=\"active\" href=\"#home\">Home</a></li>\r\n      <li><a  href=\"map\">Map</a></li>\r\n      <li><a href=\"#contact\">Contact</a></li>\r\n      <li><a href=\"#about\">About</a></li>\r\n    </ul>\r\n</div>\r\n<br/>\r\n<br/>\r\n\r\n  <table mat-table [dataSource]=\"dataSource\" matSort class=\"mat-elevation-z8\">\r\n\r\n    <!--- Note that these columns can be defined in any order.\r\n          The actual rendered columns are set as a property on the row definition\" -->\r\n  \r\n    <!-- Position Column -->\r\n    <ng-container matColumnDef=\"id\">\r\n      <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.id}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Name Column -->\r\n    <ng-container matColumnDef=\"name\">\r\n      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.name}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Weight Column -->\r\n    <ng-container matColumnDef=\"status\">\r\n      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.status}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Symbol Column -->\r\n    <ng-container matColumnDef=\"role\">\r\n      <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>\r\n      <td mat-cell *matCellDef=\"let element\"> <img (click)=\"reassign('name')\" src=\"https://img.icons8.com/material/24/000000/batch-assign.png\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\" x=\"0px\" y=\"0px\" (click)=\"complete(element.id)\"\r\n        width=\"26\" height=\"26\"\r\n        viewBox=\"0 0 192 192\"\r\n        style=\" fill:#000000;\"><g fill=\"none\" fill-rule=\"nonzero\" stroke=\"none\" stroke-width=\"1\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"><path d=\"M0,192v-192h192v192z\" fill=\"none\"></path><g fill=\"#2ecc71\"><g id=\"surface1\"><path d=\"M166.64423,34.93269l-13.24038,-9c-3.66346,-2.48077 -8.6827,-1.52884 -11.13462,2.10577l-64.90384,95.71154l-29.82693,-29.82693c-3.11538,-3.11538 -8.19231,-3.11538 -11.30769,0l-11.33654,11.33654c-3.11538,3.11538 -3.11538,8.19231 0,11.33654l45.86538,45.86538c2.56731,2.56731 6.60577,4.52884 10.24039,4.52884c3.63462,0 7.29808,-2.27884 9.66346,-5.71153l78.11538,-115.24039c2.48077,-3.63461 1.52884,-8.625 -2.13462,-11.10577z\"></path></g></g></g></svg>\r\n      </td>\r\n    </ng-container>\r\n  \r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -6177,6 +6043,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _app_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../app-service.service */ "./src/app/app-service.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+
 
 
 
@@ -6185,13 +6053,49 @@ var DashboardComponentComponent = /** @class */ (function () {
         this.appservice = appservice;
         this.workforce = [];
         this.jobs = [];
-        this.displayedColumns = ['Id', 'name', 'Status', 'Role'];
-        this.dataSource = this.workforce;
+        this.displayedColumns = ['id', 'name', 'status', 'role'];
     }
     DashboardComponentComponent.prototype.ngOnInit = function () {
-        this.workforce = this.appservice.getfreeWorkForce();
-        this.jobs = this.appservice.getAssignedJobs();
+        //this.workforce = this.appservice.getfreeWorkForce();
+        this.getData();
+        /*this.appservice.getAssignedJobs().then(re =>{
+          this.jobs = re;
+        });*/
     };
+    DashboardComponentComponent.prototype.getData = function () {
+        var _this = this;
+        var jobObservable = this.appservice.getAssignedJobs();
+        jobObservable.subscribe(function (re) {
+            re.forEach(function (item) {
+                console.log(" the item is", item);
+                item.latitude = item.zone.lattitude;
+                item.longitude = item.zone.longitude;
+                _this.jobs.push(item);
+            });
+            _this.dataSource = new _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatTableDataSource"]([]);
+            _this.dataSource = new _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatTableDataSource"](_this.jobs);
+            _this.dataSource.sort = _this.sort;
+            console.log(" the marker is", _this.dataSource);
+        });
+    };
+    DashboardComponentComponent.prototype.reassign = function () {
+        if (confirm("Are you sure to delete " + name)) {
+            console.log("Implement delete functionality here");
+        }
+    };
+    DashboardComponentComponent.prototype.complete = function (id) {
+        var _this = this;
+        if (confirm("Are you sure to mark" + id + "it complete ")) {
+            var jobObservable = this.appservice.updateEvents(id);
+            jobObservable.subscribe(function (re) {
+                _this.getData();
+            });
+        }
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(_angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSort"]),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSort"])
+    ], DashboardComponentComponent.prototype, "sort", void 0);
     DashboardComponentComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-dashboard-component',
@@ -6225,7 +6129,7 @@ module.exports = "\r\n       /* Set the size of the div element that contains th
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<input type=\"button\" (click)=\"addUser($event,content2);\" name=\"addUs\" value =\"Add User\"/>\n<agm-map [latitude]='latitude'\n[longitude]='longitude'\n[zoom]='5'\n(mapClick)='addMarker($event.coords.lat, $event.coords.lng)'>\n<agm-marker\n  *ngFor='let marker of markers'\n  [latitude]='marker.latitude'\n  [longitude]='marker.longitude'\n  [iconUrl]=\"marker.icon\"\n  [markerDraggable]='true'\n  (markerClick)='selectMarker($event,content);'\n  >\n</agm-marker>\n</agm-map>\n\n<ng-template #content let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Add Event</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form>\n    <div class=\"form-group\">\n        <label for=\"jobDate\">Event Desc</label>\n        <div class=\"input-group\">\n          <input id=\"jobdesc\" class=\"form-control\" name=\"jbdesc\" [(ngModel)]=\"jobdesc\" />\n        </div>\n      </div>\n      <div class=\"form-group\">\n        <label>Zone</label>\n        <div>\n          <select class=\"form-control\" id=\"sel1\">\n            <option value= \"1\">\n              Zone 1\n            </option>\n            <option value= \"2\">\n              Zone 2\n            </option>\n            <option value= \"3\">\n              Zone 3\n            </option>\n            <option value= \"4\">\n              Zone 4\n            </option>\n            <option value= \"5\">\n              Zone 5\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"jobDate\">Event Date</label>\n        <div class=\"input-group\">\n          <input id=\"jobDate\" class=\"form-control\" placeholder=\"yyyy-mm-dd\" name=\"dp\" [(ngModel)]=\"jobdate\" ngbDatepicker #dp=\"ngbDatepicker\">\n          <div class=\"input-group-append\">\n            <button class=\"btn btn-outline-secondary calendar\" (click)=\"dp.toggle()\" type=\"button\"></button>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"submitbutton();modal.close('Save click')\">Save</button>\n  </div>\n</ng-template>\n\n<ng-template #content2 let-modal>\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\" id=\"modal-basic-title2\">Add User</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <form>\n    <div class=\"form-group\">\n        <label for=\"jobDate\">User Name</label>\n        <div class=\"input-group\">\n          <input id=\"jobdesc\" class=\"form-control\" name=\"jbdesc\" [(ngModel)]=\"jobdesc\" />\n        </div>\n      </div>\n      <div class=\"form-group\">\n        <label>Zone</label>\n        <div>\n          <select class=\"form-control\" id=\"sel1\">\n            <option value= \"1\">\n              Zone 1\n            </option>\n            <option value= \"2\">\n              Zone 2\n            </option>\n            <option value= \"3\">\n              Zone 3\n            </option>\n            <option value= \"4\">\n              Zone 4\n            </option>\n            <option value= \"5\">\n              Zone 5\n            </option>\n          </select>\n        </div>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"jobDate\">Start Date</label>\n        <div class=\"input-group\">\n          <input id=\"jobDate\" class=\"form-control\" placeholder=\"yyyy-mm-dd\" name=\"dp\" [(ngModel)]=\"jobdate\" ngbDatepicker #dp=\"ngbDatepicker\">\n          <div class=\"input-group-append\">\n            <button class=\"btn btn-outline-secondary calendar\" (click)=\"dp.toggle()\" type=\"button\"></button>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"submitbutton();modal.close('Save click')\">Save</button>\n  </div>\n</ng-template>\n"
+module.exports = "<div>\r\n  <ul>\r\n      <li><a href=\"#home\">Home</a></li>\r\n      <li><a class=\"active\" href=\"map\">Map</a></li>\r\n      <li><a href=\"#contact\">Contact</a></li>\r\n      <li><a href=\"#about\">About</a></li>\r\n    </ul>\r\n</div>\r\n<input type=\"button\" (click)=\"addUser($event,content2);\" name=\"addUs\" value =\"Add User\"/>\r\n<div *ngIf=\"markers?.length > 0\">\r\n  <agm-map [latitude]='latitude'\r\n[longitude]='longitude'\r\n[zoom]='5'\r\n(mapClick)='addMarker($event.coords.lat, $event.coords.lng)'>\r\n<agm-marker\r\n  *ngFor='let marker of markers'\r\n  [latitude]='marker.lattitude'\r\n  [longitude]='marker.longitude'\r\n  [iconUrl]=\"marker.icon\"\r\n  [markerDraggable]='true'\r\n  (markerClick)='selectMarker($event,content);'\r\n  >\r\n</agm-marker>\r\n</agm-map>\r\n</div>\r\n\r\n\r\n<ng-template #content let-modal>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title\" id=\"modal-basic-title\">Add Event</h4>\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form>\r\n    <div class=\"form-group\">\r\n        <label for=\"jobDate\">Event Desc</label>\r\n        <div class=\"input-group\">\r\n          <input id=\"jobdesc\" class=\"form-control\" name=\"jbdesc\" [(ngModel)]=\"jobdesc\" />\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"jobDate\">Workers Needed</label>\r\n        <div class=\"input-group\">\r\n          <input id=\"jobdesc\" type=\"number\" class=\"form-control\" name=\"jbdesc\" [(ngModel)]=\"numberOfWorkers\" />\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label>PRIORITY</label>\r\n        <div>\r\n          <select [(ngModel)]=\"priority\" name=\"priority\" class=\"form-control\" id=\"sel1\">\r\n              <option value= \"CRITICAL\">\r\n                  CRITICAL\r\n                </option>\r\n            <option value= \"HIGH\">\r\n              HIGH\r\n            </option>\r\n            <option value= \"LOW\">\r\n              LOW\r\n            </option>\r\n          </select>\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"jobDate\">Event Date</label>\r\n        <div class=\"input-group\">\r\n          <input id=\"jobDate\" class=\"form-control\" placeholder=\"yyyy-mm-dd\" name=\"dp\" [(ngModel)]=\"jobdate\" ngbDatepicker #dp=\"ngbDatepicker\">\r\n          <div class=\"input-group-append\">\r\n            <button class=\"btn btn-outline-secondary calendar\" (click)=\"dp.toggle()\" type=\"button\"></button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"submitbutton();modal.close('Save click')\">Save</button>\r\n  </div>\r\n</ng-template>\r\n\r\n<ng-template #content2 let-modal>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title\" id=\"modal-basic-title2\">Add User</h4>\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body\">\r\n    <form>\r\n    <div class=\"form-group\">\r\n        <label for=\"jobDate\">User Name</label>\r\n        <div class=\"input-group\">\r\n          <input id=\"username\" class=\"form-control\" name=\"username\" [(ngModel)]=\"username\" />\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"jobDate\">Email</label>\r\n        <div class=\"input-group\">\r\n          <input id=\"email\" class=\"form-control\" name=\"email\" [(ngModel)]=\"email\" />\r\n        </div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"jobDate\">Start Date</label>\r\n        <div class=\"input-group\">\r\n          <input id=\"startdate\" class=\"form-control\" placeholder=\"yyyy-mm-dd\" name=\"startdate\" [(ngModel)]=\"startdate\" ngbDatepicker #dp=\"ngbDatepicker\">\r\n          <div class=\"input-group-append\">\r\n            <button class=\"btn btn-outline-secondary calendar\" (click)=\"dp.toggle()\" type=\"button\"></button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"submituser();modal.close('Save click')\">Save</button>\r\n  </div>\r\n</ng-template>\r\n"
 
 /***/ }),
 
@@ -6255,33 +6159,59 @@ var MapViewComponent = /** @class */ (function () {
         this.longitude = -147.20785;
         this.mapType = 'roadmap';
         this.workforce = [];
-        this.jobs = [];
-        this.iconBase = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
         // These are all just random coordinates need to get these from the services
         this.markers = [];
-        console.log(" in map component");
+        this.jobs = [];
+        this.iconBase = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
+        this.getResponse();
     }
     MapViewComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.workforce = this.appservice.getfreeWorkForce();
-        this.jobs = this.appservice.getAssignedJobs();
-        this.workforce.forEach(function (item) {
-            _this.markers.push(item);
-            _this.latitude = parseInt(item.latitude);
-            _this.longitude = parseInt(item.longitude);
-        });
-        this.jobs.forEach(function (item) {
-            _this.markers.push(item);
-        });
+    };
+    MapViewComponent.prototype.setPriority = function (val) {
+        console.log("the val", val);
+        this.priority = val;
     };
     MapViewComponent.prototype.addMarker = function (lat, lng) {
-        this.markers.push({ latitude: lat, longitude: lng, alpha: 0.4, icon: 'https://img.icons8.com/material/24/000000/calendar.png' });
+        this.markers.push({ lattitude: lat, longitude: lng, alpha: 0.4, icon: 'https://img.icons8.com/material/24/000000/calendar.png' });
     };
     MapViewComponent.prototype.max = function (coordType) {
         return Math.max.apply(Math, this.markers.map(function (marker) { return marker[coordType]; }));
     };
     MapViewComponent.prototype.min = function (coordType) {
         return Math.min.apply(Math, this.markers.map(function (marker) { return marker[coordType]; }));
+    };
+    MapViewComponent.prototype.getResponse = function () {
+        var _this = this;
+        var productsObservable = this.appservice.getfreeWorkForce();
+        productsObservable.subscribe(function (res) {
+            console.log(" the response from obser", res);
+            res.forEach(function (item) {
+                item.icon = 'https://img.icons8.com/color/32/000000/street-view.png';
+                _this.latitude = item.lattitude;
+                _this.longitude = item.longitude;
+                _this.workforce.push(item);
+                _this.markers.push(item);
+            });
+        });
+        var jobObservable = this.appservice.getAssignedJobs();
+        console.log(" the workforce", this.markers);
+        jobObservable.subscribe(function (re) {
+            re.forEach(function (item) {
+                if (item.severity == 'CRITICAL') {
+                    item.icon = 'https://img.icons8.com/bubbles/25/000000/calendar.png';
+                }
+                else if (item.severity == 'LOW') {
+                    item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
+                }
+                else {
+                    item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
+                }
+                _this.latitude = item.lattitude;
+                _this.longitude = item.longitude;
+                _this.markers.push(item);
+            });
+            console.log(" the marker is", _this.markers);
+        });
     };
     MapViewComponent.prototype.selectMarker = function (event, content) {
         var _this = this;
@@ -6299,15 +6229,44 @@ var MapViewComponent = /** @class */ (function () {
     };
     MapViewComponent.prototype.addUser = function (event, content) {
         var _this = this;
-        console.log("content", content);
+        console.log("content", event);
         this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title2' }).result.then(function (result) {
             _this.closeResult = "Closed with: " + result;
         }, function (reason) {
             _this.closeResult = "Dismissed " + _this.getDismissReason(reason);
         });
     };
+    MapViewComponent.prototype.submituser = function () {
+        console.log();
+        var jobObservable = this.appservice.createUser(this.username, this.dateas(this.startdate), this.latitude, this.longitude, this.email);
+        jobObservable.subscribe(function (resp) {
+            console.log(" the response from obser", resp);
+        });
+    };
     MapViewComponent.prototype.submitbutton = function () {
-        console.log("submit button is called", this.jobdesc, ",", this.jobdate, ",", this.selectedMarker);
+        var _this = this;
+        console.log("submit button is called", this.priority, ",", this.dateas(this.jobdate), ",", this.selectedMarker);
+        this.markers = [];
+        var jobObservable = this.appservice.createEvents(this.jobdesc, this.latitude, this.longitude, this.numberOfWorkers, this.priority, this.dateas(this.jobdate));
+        jobObservable.subscribe(function (it) {
+            var allResp = _this.appservice.getAssignedJobs();
+            allResp.subscribe(function (re) {
+                re.forEach(function (item) {
+                    if (item.severity == 'CRITICAL') {
+                        item.icon = 'https://img.icons8.com/bubbles/25/000000/calendar.png';
+                    }
+                    else if (item.severity == 'LOW') {
+                        item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
+                    }
+                    else {
+                        item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
+                    }
+                    item.latitude = item.zone.lattitude;
+                    item.longitude = item.zone.longitude;
+                    _this.markers.push(item);
+                });
+            });
+        });
     };
     MapViewComponent.prototype.getDismissReason = function (reason) {
         if (reason === _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_2__["ModalDismissReasons"].ESC) {
@@ -6319,6 +6278,18 @@ var MapViewComponent = /** @class */ (function () {
         else {
             return "with: " + reason;
         }
+    };
+    MapViewComponent.prototype.dateas = function (date) {
+        console.log(" the date is", date);
+        return date.year + '-' + this.leftpad(date.month + 1, 2)
+            + '-' + this.leftpad(date.day, 2)
+            + 'T01:20:08.257Z';
+    };
+    MapViewComponent.prototype.leftpad = function (val, resultLength, leftpadChar) {
+        if (resultLength === void 0) { resultLength = 2; }
+        if (leftpadChar === void 0) { leftpadChar = '0'; }
+        return (String(leftpadChar).repeat(resultLength)
+            + String(val)).slice(String(val).length);
     };
     MapViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -6472,7 +6443,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\govra\OneDrive\Documents\Field-scheduling\field-scheduling\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! C:\Users\govra\OneDrive\Documents\POC\Field-aware-UI\src\main.ts */"./src/main.ts");
 
 
 /***/ })
