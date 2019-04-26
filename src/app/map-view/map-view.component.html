@@ -14,7 +14,7 @@
 (mapClick)='addMarker($event.coords.lat, $event.coords.lng)'>
 <agm-marker
   *ngFor='let marker of markers'
-  [latitude]='marker.latitude'
+  [latitude]='marker.lattitude'
   [longitude]='marker.longitude'
   [iconUrl]="marker.icon"
   [markerDraggable]='true'
@@ -41,23 +41,23 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Zone</label>
+        <label for="jobDate">Workers Needed</label>
+        <div class="input-group">
+          <input id="jobdesc" type="number" class="form-control" name="jbdesc" [(ngModel)]="numberOfWorkers" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>PRIORITY</label>
         <div>
-          <select class="form-control" id="sel1">
-            <option value= "1">
-              Zone 1
+          <select [(ngModel)]="priority" name="priority" class="form-control" id="sel1">
+              <option value= "CRITICAL">
+                  CRITICAL
+                </option>
+            <option value= "HIGH">
+              HIGH
             </option>
-            <option value= "2">
-              Zone 2
-            </option>
-            <option value= "3">
-              Zone 3
-            </option>
-            <option value= "4">
-              Zone 4
-            </option>
-            <option value= "5">
-              Zone 5
+            <option value= "LOW">
+              LOW
             </option>
           </select>
         </div>
@@ -90,35 +90,19 @@
     <div class="form-group">
         <label for="jobDate">User Name</label>
         <div class="input-group">
-          <input id="jobdesc" class="form-control" name="jbdesc" [(ngModel)]="jobdesc" />
+          <input id="username" class="form-control" name="username" [(ngModel)]="username" />
         </div>
       </div>
       <div class="form-group">
-        <label>Zone</label>
-        <div>
-          <select class="form-control" id="sel1">
-            <option value= "1">
-              Zone 1
-            </option>
-            <option value= "2">
-              Zone 2
-            </option>
-            <option value= "3">
-              Zone 3
-            </option>
-            <option value= "4">
-              Zone 4
-            </option>
-            <option value= "5">
-              Zone 5
-            </option>
-          </select>
+        <label for="jobDate">Email</label>
+        <div class="input-group">
+          <input id="email" class="form-control" name="email" [(ngModel)]="email" />
         </div>
       </div>
       <div class="form-group">
         <label for="jobDate">Start Date</label>
         <div class="input-group">
-          <input id="jobDate" class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="jobdate" ngbDatepicker #dp="ngbDatepicker">
+          <input id="startdate" class="form-control" placeholder="yyyy-mm-dd" name="startdate" [(ngModel)]="startdate" ngbDatepicker #dp="ngbDatepicker">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
           </div>
@@ -127,6 +111,6 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="submitbutton();modal.close('Save click')">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="submituser();modal.close('Save click')">Save</button>
   </div>
 </ng-template>

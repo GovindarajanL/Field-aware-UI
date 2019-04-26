@@ -5,7 +5,7 @@ import {AppServiceService} from './app-service.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: []
 })
 
 
