@@ -48,6 +48,8 @@ export class MapViewComponent implements OnInit {
 
 
   addMarker(lat: number, lng: number) {
+    this.latitude = lat;
+    this.longitude = lng;
     this.markers.push({ lattitude: lat, longitude: lng, alpha: 0.4, icon: 'https://img.icons8.com/material/24/000000/calendar.png' });
   }
 
@@ -71,7 +73,7 @@ export class MapViewComponent implements OnInit {
         this.workforce.push(item);
         this.markers.push(item);
       })
-
+      console.log(" the workflorce is",this.workforce);
 
     });
     let jobObservable = this.appservice.getAssignedJobs();
@@ -87,9 +89,10 @@ export class MapViewComponent implements OnInit {
         }
         this.latitude = item.lattitude;
         this.longitude = item.longitude;
+        this.jobs.push(item);
         this.markers.push(item);
       });
-
+      
       console.log(" the marker is", this.markers);
     });
   }
@@ -129,6 +132,9 @@ export class MapViewComponent implements OnInit {
   submitbutton() {
     console.log("submit button is called", this.priority, ",", this.dateas(this.jobdate), ",", this.selectedMarker);
     this.markers = [];
+    setTimeout(function(){
+
+    },200);
     let jobObservable = this.appservice.createEvents(this.jobdesc,this.latitude,this.longitude, this.numberOfWorkers, this.priority,
                             this.dateas(this.jobdate));
     jobObservable.subscribe(it => {
@@ -142,8 +148,9 @@ export class MapViewComponent implements OnInit {
           } else {
             item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
           }
-          item.latitude = item.zone.lattitude;
-          item.longitude = item.zone.longitude;
+          this.markers.push(item);
+        });
+        this.workforce.forEach(item =>{
           this.markers.push(item);
         });
       });

@@ -23,10 +23,10 @@ export class AppServiceService {
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
 
     return this.http.get(
-      'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/users/',{headers: headers})
+      'http://localhost:1981/workforce-service/api/v1/users/',{headers: headers})
       ;
    /* return this.http.get(
-        'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/users/',{headers: headers})
+        'http://localhost:1981/workforce-service/api/v1/users/',{headers: headers})
         .subscribe(responseval =>{
           this.initializeWork(responseval)
           console.log(" the out response is",this.outWorkForseResp);
@@ -47,20 +47,20 @@ export class AppServiceService {
     //fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
     return this.http.post(
-      'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/',
+      'http://localhost:1981/workforce-service/api/v1/events/',
       JSON.stringify({active: 'Y',name:name,numberOfWorkersRequired:numberofworkers,severity:severity
             ,status:'UNASSIGNED',zoneId:0,endDate:date,startDate:date,lattitude:latitude,longitude:longitude}),
       {headers: headers});
     
   }
-
+  //localhost:1981
   createUser(name:string,date:string,latitude:number,longitude:number,email:string){
     let headers = new HttpHeaders({
       'Access-Control-Allow-Origin':'*'
     });
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
     return this.http.post(
-      'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/users/',
+      'http://localhost:1981/workforce-service/api/v1/users/',
       JSON.stringify({active: 'Y',email:email,lattitude:latitude,longitude:longitude,
           password:"12345",role:"ADMIN",name:name
             ,zoneId:0,endDate:date,startDate:date}),
@@ -74,7 +74,7 @@ export class AppServiceService {
     });
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
     return this.http.put(
-      'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/'+id+'/COMPLETED',{headers: headers});
+      'http://localhost:1981/workforce-service/api/v1/events/'+id+'/COMPLETED',{headers: headers});
     
   }
 
@@ -86,7 +86,7 @@ export class AppServiceService {
 
     /*return new Promise(resolve => {
       this.http.get(
-        'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/',{headers: headers})
+        'http://localhost:1981/workforce-service/api/v1/events/',{headers: headers})
         .subscribe(responseval =>{
           this.initialize(responseval)
           console.log(" the response is",this.outResp);
@@ -103,7 +103,7 @@ export class AppServiceService {
           
         })*/
         return this.http.get(
-          'http://fieldserviceapi-env.zhmbvkhakb.ap-southeast-1.elasticbeanstalk.com/workforce-service/api/v1/events/',{headers: headers});
+          'http://localhost:1981/workforce-service/api/v1/events/',{headers: headers});
         
        
   }

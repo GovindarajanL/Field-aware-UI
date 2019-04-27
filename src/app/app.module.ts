@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponentComponent } from './dashboard-component/dashboard-component.component'; 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule,MatPaginatorModule,MatSortModule} from '@angular/material';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTableModule} from '@angular/material/table';
 
@@ -30,6 +30,8 @@ import {MatTableModule} from '@angular/material/table';
     FormsModule,
     MatTableModule,
     BrowserAnimationsModule,
+    MatPaginatorModule,
+    MatSortModule,
     AppRoutingModule,
     NgbModule,
     AgmCoreModule.forRoot({
