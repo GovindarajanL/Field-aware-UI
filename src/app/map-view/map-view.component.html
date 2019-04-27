@@ -6,7 +6,6 @@
       <li><a href="#about">About</a></li>
     </ul>
 </div>
-<input type="button" (click)="addUser($event,content2);" name="addUs" value ="Add User"/>
 <div *ngIf="markers?.length > 0">
   <agm-map [latitude]='latitude'
 [longitude]='longitude'
@@ -27,13 +26,22 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add Event</h4>
+    <h4 class="modal-title" id="modal-basic-title">Add Event/User</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <form>
+      <div class="form-group">
+        <label> Add User/Event</label>
+        <div class="input-group">
+            <input name="options" class="form-control col-sm-2"  [(ngModel)]="options" type="radio" [value]="true" [checked]="options"/> User
+            <input name="options" class="form-control col-sm-2"  [(ngModel)]="options" type="radio" [value]="false" [checked]="!options"/> Event          
+        </div>
+      </div>
+    </form>
+    <form id="eventfrm" *ngIf="!options">
     <div class="form-group">
         <label for="jobDate">Event Desc</label>
         <div class="input-group">
@@ -72,45 +80,35 @@
         </div>
       </div>
     </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="submitbutton();modal.close('Save click')">Save</button>
-  </div>
-</ng-template>
-
-<ng-template #content2 let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title2">Add User</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form>
-    <div class="form-group">
-        <label for="jobDate">User Name</label>
-        <div class="input-group">
-          <input id="username" class="form-control" name="username" [(ngModel)]="username" />
-        </div>
-      </div>
+    <form id="userfrm" *ngIf="options">
       <div class="form-group">
-        <label for="jobDate">Email</label>
-        <div class="input-group">
-          <input id="email" class="form-control" name="email" [(ngModel)]="email" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="jobDate">Start Date</label>
-        <div class="input-group">
-          <input id="startdate" class="form-control" placeholder="yyyy-mm-dd" name="startdate" [(ngModel)]="startdate" ngbDatepicker #dp="ngbDatepicker">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          <label for="startdate">User Name</label>
+          <div class="input-group">
+            <input id="username" class="form-control" name="username" [(ngModel)]="username" />
           </div>
         </div>
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="startdate">Email</label>
+          <div class="input-group">
+            <input id="email" class="form-control" name="email" [(ngModel)]="email" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="startdate">Start Date</label>
+          <div class="input-group">
+            <input id="startdate" class="form-control" placeholder="yyyy-mm-dd" name="startdate" [(ngModel)]="startdate" ngbDatepicker #dp="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </form>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="submituser();modal.close('Save click')">Save</button>
+  <div class="modal-footer" *ngIf="!options">
+    <button type="button" class="btn btn-outline-dark" (click)="submitbutton();modal.close('Save click')">Save</button>
   </div>
+  <div class="modal-footer" *ngIf="options">
+      <button type="button" class="btn btn-outline-dark" (click)="submituser();modal.close('Save click')">Save</button>
+    </div>
 </ng-template>
+
