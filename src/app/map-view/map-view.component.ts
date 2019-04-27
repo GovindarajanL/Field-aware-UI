@@ -16,6 +16,7 @@ export class MapViewComponent implements OnInit {
   longitude = -147.20785;
   mapType = 'roadmap';
   workforce: Workforce[] = [];
+  options:boolean = false;
   // These are all just random coordinates need to get these from the services
   markers = [];
   jobs: Events[] = [];
@@ -40,7 +41,7 @@ export class MapViewComponent implements OnInit {
   priority: string;
   numberOfWorkers: number;
   email:string;
-  startdate:string;
+  startdate:Date;
   username:string;
   iconBase =
     'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
@@ -121,10 +122,24 @@ export class MapViewComponent implements OnInit {
   }
 
   submituser(){
-    console.log();
+    console.log(" the job date",this.jobdate,"startdate",this.startdate);
+    this.markers = [];
     let jobObservable = this.appservice.createUser(this.username,this.dateas(this.startdate),this.latitude,this.longitude,this.email);
     jobObservable.subscribe(resp => {
       console.log(" the response from obser", resp);
+      let productsObservable = this.appservice.getfreeWorkForce();
+      productsObservable.subscribe(res => {
+        res.forEach(item => {
+          item.icon = 'https://img.icons8.com/color/32/000000/street-view.png';
+          this.latitude = item.lattitude;
+          this.longitude = item.longitude;
+          this.workforce.push(item);
+          this.markers.push(item);
+        });
+      });
+      this.jobs.forEach(item =>{
+        this.markers.push(item);
+      });
       
     });
   }
