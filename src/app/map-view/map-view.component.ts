@@ -26,7 +26,7 @@ export class MapViewComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    console.log(" the map is called");
   }
   setPriority(val) {
 
