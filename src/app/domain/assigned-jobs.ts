@@ -13,7 +13,7 @@ export class Events {
     status?:string;
     updated?:string;
     icon?:string = '';
-
+    userName?:string;
     
     
     

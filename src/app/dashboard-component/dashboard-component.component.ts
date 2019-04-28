@@ -14,7 +14,7 @@ export class DashboardComponentComponent implements OnInit {
 
   workforce:Workforce[] =[];
   jobs:Events[] = [];
-  displayedColumns: string[] = ['id', 'name', 'status', 'date','role'];
+  displayedColumns: string[] = ['id', 'name', 'status', 'date', 'users', 'role'];
   dataSource = new MatTableDataSource([]);;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
