@@ -82,11 +82,10 @@
   [longitude]='marker.longitude'
   [iconUrl]="marker.icon"
   [markerDraggable]='true'
-  (markerClick)='selectMarker($event,content);'
+  (markerClick)='selectMarker($event,content, marker);'
   >
 </agm-marker>
 </agm-map>
-
 
 
 <ng-template #content let-modal>
@@ -108,15 +107,15 @@
     </form>
     <form id="eventfrm" *ngIf="!options">
     <div class="form-group">
-        <label for="jobDate">Event Desc</label>
+        <label for="jobdesc">Event Desc</label>
         <div class="input-group">
           <input id="jobdesc" class="form-control" name="jbdesc" [(ngModel)]="jobdesc" />
         </div>
       </div>
       <div class="form-group">
-        <label for="jobDate">Workers Needed</label>
+        <label for="numberOfWorkers">Workers Needed</label>
         <div class="input-group">
-          <input id="jobdesc" type="number" class="form-control" name="jbdesc" [(ngModel)]="numberOfWorkers" />
+          <input id="numberOfWorkers" type="number" class="form-control" name="noOfWorkers" [(ngModel)]="numberOfWorkers" />
         </div>
       </div>
       <div class="form-group">
@@ -175,5 +174,5 @@
   <div class="modal-footer" *ngIf="options">
       <button type="button" class="btn btn-outline-dark" (click)="submituser();modal.close('Save click')">Save</button>
     </div>
+    
 </ng-template>
-
