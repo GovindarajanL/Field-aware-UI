@@ -14,7 +14,7 @@ export class DashboardComponentComponent implements OnInit {
 
   workforce:Workforce[] =[];
   jobs:Events[] = [];
-  displayedColumns: string[] = ['id', 'name', 'status', 'role'];
+  displayedColumns: string[] = ['id', 'name', 'status', 'date','role'];
   dataSource = new MatTableDataSource([]);;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -23,6 +23,7 @@ export class DashboardComponentComponent implements OnInit {
   unassigned:number = 0;
   assigned:number = 0;
   inprogress:number = 0;
+  completed:number = 0;
   
 
   constructor(private appservice:AppServiceService) { }
@@ -43,17 +44,22 @@ export class DashboardComponentComponent implements OnInit {
   }
 
   getData(){
+    this.jobs = [];
+    this.assigned = 0;
+      this.unassigned = 0;
+      this.completed = 0;
+      this.inprogress = 0;
     let jobObservable = this.appservice.getAssignedJobs();
     jobObservable.subscribe(re =>{
       re.forEach(item => {
         console.log(" the item is",item);
-      item.latitude = item.zone.lattitude;
-      item.longitude = item.zone.longitude;
       this.jobs.push(item);
       if(item.status == 'UNASSIGNED'){
         this.unassigned = this.unassigned +1;
       }else if(item.status == 'ASSIGNED'){
         this.assigned = this.assigned +1;
+      }else if(item.status == 'COMPLETED'){
+        this.completed = this.completed +1;
       }else{
         this.inprogress = this.inprogress + 1;
       }
@@ -64,6 +70,7 @@ export class DashboardComponentComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       console.log(" the inprogress",this.inprogress);
+      
 
       let chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
@@ -76,7 +83,8 @@ export class DashboardComponentComponent implements OnInit {
           dataPoints: [
             { y: this.assigned, label: "ASSIGNED" },
             { y: this.unassigned, label: "UN-ASSIGNED" },
-            { y: this.inprogress, label: "IN-PROGRESS" }
+            { y: this.inprogress, label: "IN-PROGRESS" },
+            { y: this.completed, label: "COMPLETED" }
           ]
         }]
       });

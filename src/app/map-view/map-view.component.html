@@ -1,12 +1,77 @@
-<div>
-  <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a class="active" href="map">Map</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="#about">About</a></li>
-    </ul>
-</div>
-<div *ngIf="markers?.length > 0">
+<div class="fixed-top">
+    <header class="topbar">
+        <div class="container">
+          <div class="row">
+            <!-- social icon-->
+            <div class="col-sm-12">
+              <ul class="social-network">
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-google-plus"></i></a></li>
+              </ul>
+            </div>
+  
+          </div>
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+      <div class="container">
+        <a class="navbar-brand" href="index.html" style="text-transform: uppercase;"> FIELD AWARE SCHEDULING</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+  
+          <ul class="navbar-nav ml-auto">
+  
+            <li class="nav-item ">
+              <a class="nav-link" href="">Home
+                
+              </a>
+            </li>
+  
+            <li class="nav-item active">
+              <a class="nav-link" href="map">Map
+                  <span class="sr-only">(current)</span>
+              </a>
+            </li>
+  
+           <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+  
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+
+  <div style="text-align: center">
+      <h5>EVENT/USER CREATION</h5>
+      <div class="form-group">
+         
+          <div class="input-group" style="width: 45%">
+            <label for="mapdate">Event Date:</label>&nbsp;
+            <input id="mapdate" class="form-control" placeholder="yyyy-mm-dd" (change)="filterMap();" name="dp" [(ngModel)]="mapDate" ngbDatepicker #dp="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+              &nbsp;
+              <button type="button" style="width: 50%" class="btn btn-outline-dark" (click)="filterMap();">Filter</button>
+            </div>
+          </div>
+          
+        </div>  
+     </div>
+
   <agm-map [latitude]='latitude'
 [longitude]='longitude'
 [zoom]='5'
@@ -21,7 +86,7 @@
   >
 </agm-marker>
 </agm-map>
-</div>
+
 
 
 <ng-template #content let-modal>
