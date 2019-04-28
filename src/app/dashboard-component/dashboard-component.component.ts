@@ -14,7 +14,7 @@ export class DashboardComponentComponent implements OnInit {
 
   workforce:Workforce[] =[];
   jobs:Events[] = [];
-  displayedColumns: string[] = ['id', 'name', 'status', 'date','role'];
+  displayedColumns: string[] = ['id', 'name', 'status', 'date', 'users', 'role'];
   dataSource = new MatTableDataSource([]);;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -103,7 +103,7 @@ export class DashboardComponentComponent implements OnInit {
   }
 
   complete(id:string) {
-    if(confirm("Are you sure to mark"+ id+"it complete ")) {
+    if(confirm("The Event "+ id+" will be marked COMPLETED. Are you sure to proceed?")) {
 
       let jobObservable = this.appservice.updateEvents(id);
       jobObservable.subscribe(re =>{

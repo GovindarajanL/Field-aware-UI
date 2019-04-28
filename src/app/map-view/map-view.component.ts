@@ -116,8 +116,10 @@ export class MapViewComponent implements OnInit {
 
   getResponse() {
     let productsObservable = this.appservice.getfreeWorkForce();
-    productsObservable.subscribe(res => {
+    productsObservable.subscribe(res => {      
       res.forEach(item => {
+        console.log("workforce Item: "+item);
+        console.log("workforce JSON:"+JSON.stringify(item))
         item.icon = 'https://img.icons8.com/color/32/000000/street-view.png';
         this.latitude = item.lattitude;
         this.longitude = item.longitude;
@@ -130,6 +132,8 @@ export class MapViewComponent implements OnInit {
     let jobObservable = this.appservice.getAssignedJobs();
     jobObservable.subscribe(re => {
       re.forEach(item => {
+        console.log("Jobs Item: "+item);
+        console.log("Jobs JSON:"+JSON.stringify(item))
         if (item.severity == 'CRITICAL') {
           item.icon = 'https://img.icons8.com/bubbles/25/000000/calendar.png';
         } else if (item.severity == 'LOW') {
@@ -147,7 +151,12 @@ export class MapViewComponent implements OnInit {
     });
   }
 
-  selectMarker(event, content) {
+  selectMarker(event, content, marker) {
+    console.info(marker);    
+    this.jobdesc = marker.name;   
+    this.numberOfWorkers = marker.numberOfWorkersRequired;
+    this.priority = marker.severity;
+    this.jobdate = marker.startDate;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -155,7 +164,7 @@ export class MapViewComponent implements OnInit {
     });
     this.selectedMarker = {
       lat: event.latitude,
-      lng: event.longitude
+      lng: event.longitude,
     };
   }
 
