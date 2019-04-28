@@ -14,7 +14,7 @@ export class DashboardComponentComponent implements OnInit {
 
   workforce:Workforce[] =[];
   jobs:Events[] = [];
-  displayedColumns: string[] = ['id', 'name', 'status', 'role'];
+  displayedColumns: string[] = ['id', 'name', 'status', 'date','role'];
   dataSource = new MatTableDataSource([]);;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -53,8 +53,6 @@ export class DashboardComponentComponent implements OnInit {
     jobObservable.subscribe(re =>{
       re.forEach(item => {
         console.log(" the item is",item);
-      item.latitude = item.zone.lattitude;
-      item.longitude = item.zone.longitude;
       this.jobs.push(item);
       if(item.status == 'UNASSIGNED'){
         this.unassigned = this.unassigned +1;

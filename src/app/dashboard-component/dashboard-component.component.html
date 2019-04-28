@@ -1,13 +1,61 @@
-<div>
-  <ul>
-      <li><a class="active" href="#home">Home</a></li>
-      <li><a  href="map">Map</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="#about">About</a></li>
-    </ul>
-</div>
+<div class="fixed-top">
+    <header class="topbar">
+        <div class="container">
+          <div class="row">
+            <!-- social icon-->
+            <div class="col-sm-12">
+              <ul class="social-network">
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li><a class="waves-effect waves-dark" href="#"><i class="fa fa-google-plus"></i></a></li>
+              </ul>
+            </div>
+  
+          </div>
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+      <div class="container">
+        <a class="navbar-brand" href="index.html" style="text-transform: uppercase;"> FIELD AWARE SCHEDULING</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+  
+          <ul class="navbar-nav ml-auto">
+  
+            <li class="nav-item active">
+              <a class="nav-link" href="">Home
+                  <span class="sr-only">(current)</span>
+              </a>
+              
+            </li>
+  
+            <li class="nav-item ">
+              <a class="nav-link" href="map">Map</a>
+            </li>
+  
+           <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+  
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
 <br/>
 <br/>
+<br/>
+<br/>
+<div class="container" style="text-align: center">
+    <h5>EVENTS</h5>
+  </div>
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
@@ -31,15 +79,19 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
       <td mat-cell *matCellDef="let element"> {{element.status}} </td>
     </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
+    </ng-container>
   
     <!-- Symbol Column -->
     <ng-container matColumnDef="role">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
-      <td mat-cell *matCellDef="let element"> <img (click)="reassign('name')" src="https://img.icons8.com/material/24/000000/batch-assign.png">
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" (click)="complete(element.id)"
-        width="26" height="26"
-        viewBox="0 0 192 192"
-        style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,192v-192h192v192z" fill="none"></path><g fill="#2ecc71"><g id="surface1"><path d="M166.64423,34.93269l-13.24038,-9c-3.66346,-2.48077 -8.6827,-1.52884 -11.13462,2.10577l-64.90384,95.71154l-29.82693,-29.82693c-3.11538,-3.11538 -8.19231,-3.11538 -11.30769,0l-11.33654,11.33654c-3.11538,3.11538 -3.11538,8.19231 0,11.33654l45.86538,45.86538c2.56731,2.56731 6.60577,4.52884 10.24039,4.52884c3.63462,0 7.29808,-2.27884 9.66346,-5.71153l78.11538,-115.24039c2.48077,-3.63461 1.52884,-8.625 -2.13462,-11.10577z"></path></g></g></g></svg>
+      <td mat-cell *matCellDef="let element"> 
+        <i class="fa fa-check blue" (click)="complete(element.id)"></i>
+        <i class="fa fa-users" (click)="reassign('name')" aria-hidden="true"></i>
       </td>
     </ng-container>
   

@@ -20,6 +20,7 @@ export class MapViewComponent implements OnInit {
   // These are all just random coordinates need to get these from the services
   markers = [];
   jobs: Events[] = [];
+  mapDate:Date;
   constructor(private modalService: NgbModal, private appservice: AppServiceService) {
     this.getResponse();
 
@@ -28,9 +29,59 @@ export class MapViewComponent implements OnInit {
   ngOnInit() {
     console.log(" the map is called");
   }
+  filterMap(){
+    this.workforce = [];
+    this.jobs = [];
+    let filteredJobs = [];
+    let filteredWorkForce = [];
+    this.markers = [];
+    let productsObservable = this.appservice.getfreeWorkForce();
+    productsObservable.subscribe(res => {
+      console.log(" the response from obser", res);
+      res.forEach(item => {
+        item.icon = 'https://img.icons8.com/color/32/000000/street-view.png';
+        this.workforce.push(item);
+        console.log(" the start date is",item.startDate,", filter date",this.datesmall(this.mapDate));
+        if(this.datesmall(this.mapDate) == item.startDate){
+          console.log(" filtered &&&&&",item.startDate);
+          filteredWorkForce.push(item);
+        }
+      })
+      filteredWorkForce.forEach(e =>{
+        console.log(" the filtered work",e);
+        this.markers.push(e);
+      })
+      
+    });
+    let jobObservable = this.appservice.getAssignedJobs();
+    jobObservable.subscribe(re => {
+      re.forEach(item => {
+        if (item.severity == 'CRITICAL') {
+          item.icon = 'https://img.icons8.com/bubbles/25/000000/calendar.png';
+        } else if (item.severity == 'LOW') {
+          item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
+        } else {
+          item.icon = 'https://img.icons8.com/material/24/000000/calendar.png';
+        }
+        this.jobs.push(item);
+        console.log(" the start date is",item.startDate,", filter date",this.datesmall(this.mapDate));
+        if(this.datesmall(this.mapDate) == item.startDate){
+          filteredJobs.push(item);
+        }
+        
+      });
+
+      
+
+      filteredJobs.forEach(e =>{
+        console.log(" the filtered job",e);
+        this.markers.push(e);
+      })
+    });
+
+  }
   setPriority(val) {
 
-    console.log("the val", val);
     this.priority = val;
   }
   closeResult: string;
@@ -66,7 +117,6 @@ export class MapViewComponent implements OnInit {
   getResponse() {
     let productsObservable = this.appservice.getfreeWorkForce();
     productsObservable.subscribe(res => {
-      console.log(" the response from obser", res);
       res.forEach(item => {
         item.icon = 'https://img.icons8.com/color/32/000000/street-view.png';
         this.latitude = item.lattitude;
@@ -74,11 +124,10 @@ export class MapViewComponent implements OnInit {
         this.workforce.push(item);
         this.markers.push(item);
       })
-      console.log(" the workflorce is",this.workforce);
+      
 
     });
     let jobObservable = this.appservice.getAssignedJobs();
-    console.log(" the workforce", this.markers);
     jobObservable.subscribe(re => {
       re.forEach(item => {
         if (item.severity == 'CRITICAL') {
@@ -94,18 +143,16 @@ export class MapViewComponent implements OnInit {
         this.markers.push(item);
       });
       
-      console.log(" the marker is", this.markers);
+      
     });
   }
 
   selectMarker(event, content) {
-    console.log("open marker called ", content);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
-    console.log("icon base is", this.iconBase);
     this.selectedMarker = {
       lat: event.latitude,
       lng: event.longitude
@@ -113,7 +160,6 @@ export class MapViewComponent implements OnInit {
   }
 
   addUser(event, content) {
-    console.log("content", event);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title2' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -122,11 +168,9 @@ export class MapViewComponent implements OnInit {
   }
 
   submituser(){
-    console.log(" the job date",this.jobdate,"startdate",this.startdate);
     this.markers = [];
     let jobObservable = this.appservice.createUser(this.username,this.dateas(this.startdate),this.latitude,this.longitude,this.email);
     jobObservable.subscribe(resp => {
-      console.log(" the response from obser", resp);
       let productsObservable = this.appservice.getfreeWorkForce();
       productsObservable.subscribe(res => {
         res.forEach(item => {
@@ -145,7 +189,6 @@ export class MapViewComponent implements OnInit {
   }
 
   submitbutton() {
-    console.log("submit button is called", this.priority, ",", this.dateas(this.jobdate), ",", this.selectedMarker);
     this.markers = [];
     setTimeout(function(){
 
@@ -184,10 +227,15 @@ export class MapViewComponent implements OnInit {
   }
 
   dateas(date): string {
-    console.log(" the date is", date);
-    return date.year+'-'+this.leftpad(date.month + 1, 2)
+    return date.year+'-'+this.leftpad(date.month, 2)
       + '-' + this.leftpad(date.day, 2)
       +'T01:20:08.257Z';
+  }
+
+  datesmall(date): string {
+    return date.year+'-'+this.leftpad(date.month, 2)
+      + '-' + this.leftpad(date.day, 2)
+      ;
   }
 
   leftpad(val, resultLength = 2, leftpadChar = '0'): string {
